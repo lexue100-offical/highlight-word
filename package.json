@@ -6,7 +6,8 @@
     "build": "next build",
     "dev": "next dev",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "generate": "esno ./script/index.ts"
   },
   "dependencies": {
     "@tanstack/react-query": "^4.10.0",
@@ -30,6 +31,7 @@
     "autoprefixer": "^10.4.7",
     "eslint": "8.22.0",
     "eslint-config-next": "12.3.1",
+    "esno": "^0.16.3",
     "postcss": "^8.4.14",
     "prettier": "^2.7.1",
     "prettier-plugin-tailwindcss": "^0.1.13",
