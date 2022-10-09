@@ -2,9 +2,11 @@
 import { t } from "../trpc";
 
 import { exampleRouter } from "./example";
+import { dataRouter } from "./data";
 
 export const appRouter = t.router({
   example: exampleRouter,
+  data: dataRouter,
 });
 
 // export type definition of API
