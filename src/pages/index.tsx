@@ -61,9 +61,7 @@ const Home: NextPage<Props> = ({
   easyData,
 }) => {
   const [paragraph, setParagraph] = useState(PARAGRAPH);
-  const easyWords = useStore((s) => s.easyWords);
-
-  console.log({ easyData });
+  
   return (
     <>
       <Head>
