@@ -1,26 +1,59 @@
-import type { NextPage } from "next";
+import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
 import Head from "next/head";
+import { useState } from "react";
+import fs from "fs/promises";
 import { trpc } from "../utils/trpc";
+import path from "path";
+import { EazyWordsDialog } from "../components";
+import { useStore } from "../store";
 
 const PARAGRAPH =
   "Hello! I'm a monster (怪物). My name is Qiqi. I have a big (大的) ear and three（三个）small（小的）eyes. I have no nose. My body is fat (胖的)And my mouth is very big.1 have one long（长的）arm and two short（短的）legs．Can you draw me？";
 const PARAGRAPH_2 = `My uncle Mike is a music teacher. He never gets up very late. He usually gets up at five o’clock in the morning. After he brushes his teeth, he often plays baseball with my aunt. Then he eats breakfast. After that, he often plays the violin. At about seven fifty he takes the No. 6 bus to school. 
 He has no classes on Thursday and Friday. He usually goes to the violin club. There he helps kids with the violin. Oh, my brother plays the violin very well. Do you love to play the violin? Do you want to join the violin club? Please call my uncle at 116-3886.`;
 
+type Match = { word: string; occurrences: number };
+
 function matchWordFromParagraph(wordList: string[]) {
-  const results: string[] = [];
+  const results: Match[] = [];
   const words = PARAGRAPH_2.split(" ");
   for (const word of words) {
     if (wordList.includes(word)) {
-      results.push(word);
+      const index = results.findIndex((s) => s.word === word);
+      if (index === -1) {
+        results.push({ word, occurrences: 1 });
+      } else {
+        results[index] = {
+          word: results[index]!.word,
+          occurrences: results[index]!.occurrences + 1,
+        };
+      }
     }
   }
-  console.log({wordList, results})
+  console.log({ wordList, results });
   return results;
 }
 
-const Home: NextPage = () => {
-  const { data } = trpc.data.hello.useQuery();
+type TextData = {
+  data: string[];
+};
+
+type Props = {
+  primaryData: TextData;
+  juniorData: TextData;
+  seniorData: TextData;
+  easyData: TextData;
+};
+
+const Home: NextPage<Props> = ({
+  primaryData,
+  juniorData,
+  seniorData,
+  easyData,
+}) => {
+  console.log(easyData);
+  const [] = useState();
+  const toggleDialogOpen = useStore((s) => s.toggleDialogOpen);
 
   return (
     <>
@@ -33,35 +66,48 @@ const Home: NextPage = () => {
         <h1 className="text-5xl font-extrabold leading-normal text-gray-700 md:text-[5rem]">
           单词 <span className="text-purple-300">解析</span> App
         </h1>
-        <p>{PARAGRAPH_2}</p>
+        {/* <div>
+          <input type="checkbox" checked={} />
+        </div> */}
+        <button onClick={toggleDialogOpen}> 打开modal</button>
+        <EazyWordsDialog easyWords={easyData.data} />
         <section className="flex w-full space-x-2">
           <textarea
             placeholder="请输入文本"
             value={PARAGRAPH_2}
-            className="w-full rounded border border-red-300 bg-red-50 p-3 text-slate-400 focus:outline-none"
+            onChange={() => {}}
+            className="h-auto w-full rounded border border-red-300 bg-red-50 p-3 text-slate-400 focus:outline-none"
           ></textarea>
-          {data && (
-            <div className="text-lg">
-              <div className="flex flex-col">
-                小学 :{" "}
-                {matchWordFromParagraph(data.primaryData).map((word, i) => (
-                  <span key={i} className="text-red-400 bg-red-50">{word}</span>
-                ))}
-              </div>
+          <div className="text-lg">
+            <div className="flex flex-col">
+              小学 :{" "}
+              {matchWordFromParagraph(primaryData.data).map((match, i) => (
+                <span key={i} className="bg-red-50 text-red-400">
+                  {match.word} {match.occurrences}次
+                </span>
+              ))}
+            </div>
+          </div>
+          {/* {data && (
+            
               <div className="flex flex-col">
                 初中 :{" "}
                 {matchWordFromParagraph(data.juniorData).map((word, i) => (
-                  <span key={i} className="text-red-400 bg-red-50">{word}</span>
+                  <span key={i} className="bg-red-50 text-red-400">
+                    {word}
+                  </span>
                 ))}
               </div>
               <div className="flex flex-col">
                 高中 :{" "}
                 {matchWordFromParagraph(data.seniorData).map((word, i) => (
-                  <span key={i} className="text-red-400 bg-red-50">{word}</span>
+                  <span key={i} className="bg-red-50 text-red-400">
+                    {word}
+                  </span>
                 ))}
               </div>
             </div>
-          )}
+          )} */}
         </section>
       </main>
     </>
@@ -69,3 +115,29 @@ const Home: NextPage = () => {
 };
 
 export default Home;
+
+const dataSources = [
+  "src/data/小学.json",
+  "src/data/初中.json",
+  "src/data/高中.json",
+  "src/data/简单.json",
+];
+
+export const getStaticProps: GetStaticProps = async () => {
+  const [primaryData, juniorData, seniorData, easyData] = await Promise.all(
+    dataSources.map((source) =>
+      fs.readFile(path.resolve(process.cwd(), source), {
+        encoding: "utf8",
+      })
+    )
+  ).then((d) => d.map((s) => JSON.parse(s)));
+
+  return {
+    props: {
+      primaryData,
+      juniorData,
+      seniorData,
+      easyData,
+    },
+  };
+};

@@ -20,6 +20,7 @@ function generateJson() {
   const x3 = xlsx.utils.sheet_to_json<EnglishDataSheet>(
     xlsx.readFile(book3Path)["Sheets"]["高中全部"]!
   );
+  // 去重
   const primaryData = Array.from(new Set(x1.map((x) => x.eng.trim()))); //小学
   const juniorData = Array.from(
     new Set(x2.map((x) => x.eng.trim()))
