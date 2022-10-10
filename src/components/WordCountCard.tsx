@@ -46,8 +46,9 @@ function matchWordFromParagraph(
     }
   }
 
-  console.log({ results });
-  return results;
+  return results.sort((a, b) =>
+    a.word.toLowerCase() > b.word.toLowerCase() ? 1 : -1
+  );
 }
 
 interface WordCountCardProps {
