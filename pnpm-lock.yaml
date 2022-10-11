@@ -17,6 +17,7 @@ specifiers:
   eslint: 8.22.0
   eslint-config-next: 12.3.1
   esno: ^0.16.3
+  fuse.js: ^6.6.2
   next: 12.3.1
   postcss: ^8.4.14
   prettier: ^2.7.1
@@ -38,6 +39,7 @@ dependencies:
   '@trpc/react': 10.0.0-proxy-beta.15_oqq3zeu53pwwxzkjqaoxtnh3le
   '@trpc/server': 10.0.0-proxy-beta.15
   axios: 1.1.2
+  fuse.js: 6.6.2
   next: 12.3.1_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
@@ -1660,6 +1662,11 @@ packages:
   /functions-have-names/1.2.3:
     resolution: {integrity: sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==}
     dev: true
+
+  /fuse.js/6.6.2:
+    resolution: {integrity: sha512-cJaJkxCCxC8qIIcPBF9yGxY0W/tVZS3uEISDxhYIdtk8OL93pe+6Zj7LjCqVV4dzbqcriOZ+kQ/NE4RXZHsIGA==}
+    engines: {node: '>=10'}
+    dev: false
 
   /get-intrinsic/1.1.3:
     resolution: {integrity: sha512-QJVz1Tj7MS099PevUG5jvnt9tSkXN8K14dxQlikJuPt4uD9hHAHjLyLBiLR5zELelBdD9QNRAXZzsJx0WaDL9A==}
