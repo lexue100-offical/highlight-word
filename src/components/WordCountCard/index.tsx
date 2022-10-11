@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useStore } from "../../store";
 import { matchWordFromParagraph } from "./matchWord";
 import type { SplittedData } from "../../types/index";
+
 interface WordCountCardProps {
   title: string;
   // 段落
@@ -24,10 +25,10 @@ export const WordCountCard = ({
       ? easyData.map((word) => ({ word, filtering: true }))
       : s.easyWords
   );
-  const [fuzzySearchEnabled, setFuzzysearchEnabled] = useState(true);
+  const [fuzzySearchEnabled, setFuzzysearchEnabled] = useState(false);
   const [phraseSearchEnabled, setPhraseSearchEnabled] = useState(true);
   const matchedWords = matchWordFromParagraph(paragraph, data, easyWords, {
-    // fuzzySearch: fuzzySearchEnabled,
+    fuzzySearch: fuzzySearchEnabled,
     withPhrase: phraseSearchEnabled,
   });
   // 二级内容为空不显示
@@ -59,7 +60,7 @@ export const WordCountCard = ({
           </label>
         </div>
         {matchedWords.length > 0 && (
-          <div className="no-scrollbar flex md:max-h-48 max-h-36 flex-col overflow-y-scroll rounded bg-red-50 p-2">
+          <div className="no-scrollbar flex max-h-36 flex-col overflow-y-scroll rounded bg-red-50 p-2 md:max-h-48">
             {matchedWords.map((match, i) => (
               <span key={i} className="text-red-400 hover:text-red-500">
                 {match.word} {match.occurrences}次

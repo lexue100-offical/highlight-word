@@ -1,4 +1,3 @@
-import Fuse from "fuse.js";
 import type { Match, WordFilter } from "../../types";
 
 type SearchConfig = { withPhrase?: boolean; fuzzySearch?: boolean };
@@ -26,13 +25,7 @@ export function matchWordFromParagraph(
   const filterWords = _filterWords
     .filter((w) => w.filtering)
     .map((w) => w.word);
-  // console.log("Split result: ", splitedWords);
   const hasSpaceWords = wordList.filter((w) => w.includes(" "));
-
-  //
-  const fuse = new Fuse(splitedWords, {
-    isCaseSensitive: false,
-  });
 
   function addWordToList(word: string) {
     const index = results.findIndex((s) => s.word === word);
@@ -45,7 +38,7 @@ export function matchWordFromParagraph(
       };
     }
   }
-  
+
   // 包含短语的时候增加带空格(短语词汇)检测
   if (withPhrase) {
     for (const spaceWord of hasSpaceWords) {
@@ -59,20 +52,9 @@ export function matchWordFromParagraph(
   }
 
   for (const word of splitedWords) {
-    if (fuzzySearch) {
-      //   const results = fuse.search(word);
-      //   console.log({ results });
-      //   for (const result of results) {
-      //     addWordToList(result.item);
-      //   }
-      if (wordList.includes(word) && !filterWords.includes(word)) {
-        addWordToList(word);
-      }
-    } else {
-      if (filterWords.includes(word)) continue;
-      if (wordList.includes(word)) {
-        addWordToList(word);
-      }
+    if (filterWords.includes(word)) continue;
+    if (wordList.includes(word)) {
+      addWordToList(word);
     }
   }
 

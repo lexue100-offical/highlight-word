@@ -1,4 +1,4 @@
-import type { GetStaticPaths, GetStaticProps, NextPage } from "next";
+import type { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
 import fs from "fs/promises";
@@ -29,7 +29,7 @@ const Home: NextPage<Props> = ({
   seniorDataSplitted,
 }) => {
   const [paragraph, setParagraph] = useState(PARAGRAPH);
-  console.log(seniorDataSplitted);
+
   return (
     <>
       <Head>
