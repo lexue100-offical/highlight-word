@@ -42,7 +42,7 @@ export const WordCountCard = ({
         </span>
         <div className="flex">
           {/* <label>
-            <span>模糊搜索</span>
+            <span className="mr-1">模糊搜索</span>
             <input
               type="checkbox"
               checked={fuzzySearchEnabled}
@@ -50,7 +50,7 @@ export const WordCountCard = ({
             />
           </label> */}
           <label>
-            <span>包含短语</span>
+            <span className="mr-1">包含短语</span>
             <input
               type="checkbox"
               checked={phraseSearchEnabled}
@@ -59,7 +59,7 @@ export const WordCountCard = ({
           </label>
         </div>
         {matchedWords.length > 0 && (
-          <div className="no-scrollbar flex max-h-40 flex-col overflow-y-scroll rounded bg-red-50 p-2">
+          <div className="no-scrollbar flex md:max-h-48 max-h-36 flex-col overflow-y-scroll rounded bg-red-50 p-2">
             {matchedWords.map((match, i) => (
               <span key={i} className="text-red-400 hover:text-red-500">
                 {match.word} {match.occurrences}次
