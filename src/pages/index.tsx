@@ -14,15 +14,18 @@ type TextData = {
   data: string[];
 };
 
+type SplitedData = {
+  title: string;
+  content: string[];
+}[];
+
 type Props = {
   primaryData: TextData;
   juniorData: TextData;
   seniorData: TextData;
   easyData: TextData;
-  primaryDataSplited: {
-    title: string;
-    content: string[];
-  }[];
+  primaryDataSplited: SplitedData;
+  juniorDataSplited: SplitedData;
 };
 
 const Home: NextPage<Props> = ({
@@ -31,6 +34,7 @@ const Home: NextPage<Props> = ({
   seniorData,
   easyData,
   primaryDataSplited,
+  juniorDataSplited,
   ...props
 }) => {
   const [paragraph, setParagraph] = useState(PARAGRAPH);
@@ -69,6 +73,7 @@ const Home: NextPage<Props> = ({
               title="初中"
               data={juniorData.data}
               paragraph={paragraph}
+              splitedData={juniorDataSplited}
             />
             <WordCountCard
               title="高中"
@@ -85,22 +90,27 @@ const Home: NextPage<Props> = ({
 export default Home;
 
 const dataSources = [
-  "src/data/简单.json",
-  "src/data/小学.json",
-  "src/data/初中.json",
-  "src/data/高中.json",
-  "src/data/小学一上.json",
-  "src/data/小学一下.json",
-  "src/data/小学二上.json",
-  "src/data/小学二下.json",
-  "src/data/小学三上.json",
-  "src/data/小学三下.json",
-  "src/data/小学四上.json",
-  "src/data/小学四下.json",
-  "src/data/小学五上.json",
-  "src/data/小学五下.json",
-  "src/data/小学六上.json",
-  "src/data/小学六下.json",
+  "简单.json",
+  "小学.json",
+  "初中.json",
+  "高中.json",
+  "小学一上.json",
+  "小学一下.json",
+  "小学二上.json",
+  "小学二下.json",
+  "小学三上.json",
+  "小学三下.json",
+  "小学四上.json",
+  "小学四下.json",
+  "小学五上.json",
+  "小学五下.json",
+  "小学六上.json",
+  "小学六下.json",
+  "初一上.json",
+  "初一下.json",
+  "初二上.json",
+  "初二下.json",
+  "初三.json",
 ];
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -121,9 +131,14 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     gradeFiveSecondData,
     gradeSixFirstData,
     gradeSixSecondData,
+    gradeSevenFirstData,
+    gradeSevenSecondData,
+    gradeEightFirstData,
+    gradeEightSecondData,
+    gradeNineData,
   ] = await Promise.all(
     dataSources.map((source) =>
-      fs.readFile(path.resolve(process.cwd(), source), {
+      fs.readFile(path.resolve(process.cwd(), "src", "data", source), {
         encoding: "utf8",
       })
     )
@@ -148,6 +163,13 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { title: "小学五下", content: gradeFiveSecondData },
         { title: "小学六上", content: gradeSixFirstData },
         { title: "小学六下", content: gradeSixSecondData },
+      ],
+      juniorDataSplited: [
+        { title: "初一上", content: gradeSevenFirstData },
+        { title: "初一下", content: gradeSevenSecondData },
+        { title: "初二上", content: gradeEightFirstData },
+        { title: "初二下", content: gradeEightSecondData },
+        { title: "初三", content: gradeNineData },
       ],
     },
   };
