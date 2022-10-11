@@ -21,9 +21,9 @@ const EmptyState: GlobalStore = {
   easyWords: [],
   dialogOpen: false,
   toggleDialogOpen: () => {},
-  initEasyWords: (words: string[]) => {},
-  changeWordFilterStatus: (word: string) => {},
-  addEasyWords: (newWord: string) => {},
+  initEasyWords: () => {},
+  changeWordFilterStatus: () => {},
+  addEasyWords: () => {},
 };
 
 export const usePersistedStore = create<GlobalStore>()(
@@ -52,6 +52,7 @@ export const usePersistedStore = create<GlobalStore>()(
     }),
     {
       name: "paragraph-analyzer",
+      //@ts-ignore
       partialize: ({ easyWords }) => ({ easyWords }),
     }
   )
