@@ -4,28 +4,19 @@ import { useState } from "react";
 import fs from "fs/promises";
 import path from "path";
 import { EazyWordsDialog, OpenModalButton, WordCountCard } from "../components";
-import { useStore } from "../store";
-import type { Match, WordFilter } from "../types/index";
+import type { TextData, SplittedData } from "../types/index";
 
 const PARAGRAPH = `My uncle Mike is a music teacher. He never gets up very late. He usually gets up at five o’clock in the morning. After he brushes his teeth, he often plays baseball with my aunt. Then he eats breakfast. After that, he often plays the violin. At about seven fifty he takes the No. 6 bus to school. 
 He has no classes on Thursday and Friday. He usually goes to the violin club. There he helps kids with the violin. Oh, my brother plays the violin very well. Do you love to play the violin? Do you want to join the violin club? Please call my uncle at 116-3886.`;
-
-type TextData = {
-  data: string[];
-};
-
-type SplitedData = {
-  title: string;
-  content: string[];
-}[];
 
 type Props = {
   primaryData: TextData;
   juniorData: TextData;
   seniorData: TextData;
   easyData: TextData;
-  primaryDataSplited: SplitedData;
-  juniorDataSplited: SplitedData;
+  primaryDataSplitted: SplittedData;
+  juniorDataSplitted: SplittedData;
+  seniorDataSplitted: SplittedData;
 };
 
 const Home: NextPage<Props> = ({
@@ -33,12 +24,12 @@ const Home: NextPage<Props> = ({
   juniorData,
   seniorData,
   easyData,
-  primaryDataSplited,
-  juniorDataSplited,
-  ...props
+  primaryDataSplitted,
+  juniorDataSplitted,
+  seniorDataSplitted,
 }) => {
   const [paragraph, setParagraph] = useState(PARAGRAPH);
-  console.log(props);
+  console.log(seniorDataSplitted);
   return (
     <>
       <Head>
@@ -67,18 +58,19 @@ const Home: NextPage<Props> = ({
               title="小学"
               data={primaryData.data}
               paragraph={paragraph}
-              splitedData={primaryDataSplited}
+              splittedData={primaryDataSplitted}
             />
             <WordCountCard
               title="初中"
               data={juniorData.data}
               paragraph={paragraph}
-              splitedData={juniorDataSplited}
+              splittedData={juniorDataSplitted}
             />
             <WordCountCard
               title="高中"
               data={seniorData.data}
               paragraph={paragraph}
+              splittedData={seniorDataSplitted}
             />
           </div>
         </section>
@@ -111,6 +103,13 @@ const dataSources = [
   "初二上.json",
   "初二下.json",
   "初三.json",
+  "高中必修一.json",
+  "高中必修二.json",
+  "高中必修三.json",
+  "高二选修一.json",
+  "高二选修二.json",
+  "高二选修三.json",
+  "高三选修四.json",
 ];
 
 export const getStaticProps: GetStaticProps<Props> = async () => {
@@ -136,6 +135,13 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
     gradeEightFirstData,
     gradeEightSecondData,
     gradeNineData,
+    gradeTenFirstData,
+    gradeTenSecondData,
+    gradeTenThirdData,
+    gradeElevenFirstData,
+    gradeElevenSecondData,
+    gradeElevenThirdData,
+    gradeTwelveFirstData,
   ] = await Promise.all(
     dataSources.map((source) =>
       fs.readFile(path.resolve(process.cwd(), "src", "data", source), {
@@ -150,7 +156,7 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
       juniorData,
       seniorData,
       easyData,
-      primaryDataSplited: [
+      primaryDataSplitted: [
         { title: "小学一上", content: gradeOneFirstData },
         { title: "小学一下", content: gradeOneSecondData },
         { title: "小学二上", content: gradeTwoFirstData },
@@ -164,12 +170,21 @@ export const getStaticProps: GetStaticProps<Props> = async () => {
         { title: "小学六上", content: gradeSixFirstData },
         { title: "小学六下", content: gradeSixSecondData },
       ],
-      juniorDataSplited: [
+      juniorDataSplitted: [
         { title: "初一上", content: gradeSevenFirstData },
-        { title: "初一下", content: gradeSevenSecondData },
+        { title: "初一下", content: gradeTenSecondData },
         { title: "初二上", content: gradeEightFirstData },
         { title: "初二下", content: gradeEightSecondData },
         { title: "初三", content: gradeNineData },
+      ],
+      seniorDataSplitted: [
+        { title: "高中必修一", content: gradeTenFirstData },
+        { title: "高中必修二", content: gradeSevenSecondData },
+        { title: "高中必修三", content: gradeTenThirdData },
+        { title: "高二选修一", content: gradeElevenFirstData },
+        { title: "高二选修二", content: gradeElevenSecondData },
+        { title: "高二选修三", content: gradeElevenThirdData },
+        { title: "高三选修四", content: gradeTwelveFirstData },
       ],
     },
   };

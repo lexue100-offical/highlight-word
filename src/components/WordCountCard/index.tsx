@@ -1,24 +1,21 @@
 import { useState } from "react";
 import { useStore } from "../../store";
 import { matchWordFromParagraph } from "./matchWord";
-
+import type { SplittedData } from "../../types/index";
 interface WordCountCardProps {
   title: string;
   // 段落
   paragraph: string;
   // 数据
   data: string[];
-  splitedData?: {
-    title: string;
-    content: string[];
-  }[];
+  splittedData?: SplittedData;
 }
 
 export const WordCountCard = ({
   title,
   paragraph,
   data,
-  splitedData,
+  splittedData,
 }: WordCountCardProps) => {
   const easyWords = useStore((s) => s.easyWords);
   const [fuzzySearchEnabled, setFuzzysearchEnabled] = useState(true);
@@ -28,12 +25,13 @@ export const WordCountCard = ({
     withPhrase: phraseSearchEnabled,
   });
   // 二级内容为空不显示
-  if (!splitedData && matchedWords.length < 1) return null;
+  if (!splittedData && matchedWords.length < 1) return null;
+
   return (
-    <div className="rounded-md border border-indigo-300 p-2 text-lg">
+    <div className="flex-1 space-y-3 rounded-md border border-indigo-300 p-3 text-lg">
       <div>
         <span>
-          <strong>{title}</strong>
+          <strong className="text-xl">{title}</strong>
           {`共(${matchedWords.length})个词`}
         </span>
         <div className="flex">
@@ -55,7 +53,7 @@ export const WordCountCard = ({
           </label>
         </div>
         {matchedWords.length > 0 && (
-          <div className="flex flex-col rounded bg-red-50 p-2">
+          <div className="no-scrollbar flex max-h-40 flex-col overflow-y-scroll rounded bg-red-50 p-2">
             {matchedWords.map((match, i) => (
               <span key={i} className="text-red-400 hover:text-red-500">
                 {match.word} {match.occurrences}次
@@ -64,7 +62,7 @@ export const WordCountCard = ({
           </div>
         )}
       </div>
-      {splitedData?.map((data, index) => (
+      {splittedData?.map((data, index) => (
         <WordCountCard
           title={data.title}
           paragraph={paragraph}

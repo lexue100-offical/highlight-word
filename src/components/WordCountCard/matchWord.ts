@@ -19,7 +19,7 @@ export function matchWordFromParagraph(
     // 清除标点 TODO: 当前仅仅是常用的
     .replace(/(\.|,|\?|;)/g, "")
     .split(" ");
-  console.log("Split result: ", splitedWords);
+  // console.log("Split result: ", splitedWords);
   const hasSpaceWords = wordList.filter((w) => w.includes(" "));
   const filterWords = _filterWords
     .filter((w) => w.filtering)
@@ -49,7 +49,7 @@ export function matchWordFromParagraph(
       }
     }
   }
-
+  console.log({filterWords})
   for (const word of splitedWords) {
     if (fuzzySearch) {
       //   const results = fuse.search(word);

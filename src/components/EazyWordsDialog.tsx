@@ -69,7 +69,7 @@ export const EazyWordsDialog = ({
           <div className="grid grid-cols-6 gap-3">
             {easyWords.map((word) => (
               <label className="space-x-2 text-xl" key={word.word}>
-                <span>{word.word}</span>
+                <span className="hover:text-slate-600">{word.word}</span>
                 <input
                   type="checkbox"
                   checked={word.filtering}
