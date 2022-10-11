@@ -59,18 +59,21 @@ const Home: NextPage<Props> = ({
               data={primaryData.data}
               paragraph={paragraph}
               splittedData={primaryDataSplitted}
+              easyData={easyData.data}
             />
             <WordCountCard
               title="初中"
               data={juniorData.data}
               paragraph={paragraph}
               splittedData={juniorDataSplitted}
+              easyData={easyData.data}
             />
             <WordCountCard
               title="高中"
               data={seniorData.data}
               paragraph={paragraph}
               splittedData={seniorDataSplitted}
+              easyData={easyData.data}
             />
           </div>
         </section>

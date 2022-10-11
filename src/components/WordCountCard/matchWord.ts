@@ -41,15 +41,16 @@ export function matchWordFromParagraph(
     }
   }
   // 包含短语的时候增加带空格(短语词汇)检测
-  if (withPhrase) {
-    for (const spaceWord of hasSpaceWords) {
-      // const result =
-      if (paragraph.includes(spaceWord)) {
-        addWordToList(spaceWord);
-      }
-    }
-  }
-  console.log({filterWords})
+  // if (withPhrase) {
+  //   for (const spaceWord of hasSpaceWords) {
+
+  //     if (paragraph.includes(spaceWord)) {
+  //       addWordToList(spaceWord);
+  //     }
+  //   }
+  // }
+
+  console.log({ filterWords });
   for (const word of splitedWords) {
     if (fuzzySearch) {
       //   const results = fuse.search(word);
@@ -61,7 +62,8 @@ export function matchWordFromParagraph(
         addWordToList(word);
       }
     } else {
-      if (wordList.includes(word) && !filterWords.includes(word)) {
+      if (filterWords.includes(word)) continue;
+      if (wordList.includes(word)) {
         addWordToList(word);
       }
     }

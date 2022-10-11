@@ -8,6 +8,7 @@ interface WordCountCardProps {
   paragraph: string;
   // 数据
   data: string[];
+  easyData: string[];
   splittedData?: SplittedData;
 }
 
@@ -16,8 +17,13 @@ export const WordCountCard = ({
   paragraph,
   data,
   splittedData,
+  easyData,
 }: WordCountCardProps) => {
-  const easyWords = useStore((s) => s.easyWords);
+  const easyWords = useStore((s) =>
+    s.easyWords.length === 0
+      ? easyData.map((word) => ({ word, filtering: true }))
+      : s.easyWords
+  );
   const [fuzzySearchEnabled, setFuzzysearchEnabled] = useState(true);
   const [phraseSearchEnabled, setPhraseSearchEnabled] = useState(true);
   const matchedWords = matchWordFromParagraph(paragraph, data, easyWords, {
@@ -67,6 +73,7 @@ export const WordCountCard = ({
           title={data.title}
           paragraph={paragraph}
           data={data.content}
+          easyData={easyData}
           key={index}
         />
       ))}
